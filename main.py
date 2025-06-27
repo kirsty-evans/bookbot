@@ -1,9 +1,11 @@
 from stats import get_num_words
+import sys
 
 def sort_key(dict):
     return dict["count"]
 
 def count_char(text):
+    print("--------- Character Count -------")
     lowercase = text.lower()
     dictionary = {}
     for character in lowercase:
@@ -19,13 +21,23 @@ def count_char(text):
     converted_list.sort(reverse=True, key = sort_key)
 
     for item in converted_list:
-            print(f"The '{item["letter"]}' character was found {item["count"]} times")
-
+            print(f"{item["letter"]}: {item["count"]}")
 
 def main():
-    with open("books/frankenstein.txt") as f:
+
+    # the first argument should be the path to the book, e.g. 'books/frankenstein.txt'
+
+    # arguments check
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1) #exit with error code 1
+
+    selected_book = sys.argv[1]
+
+    with open(selected_book) as f:
         file_contents = f.read()
-    print(f"--- Begin report of books/frankenstein.txt ---")
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {selected_book}...")
     get_num_words(file_contents)
     count_char(file_contents)
     print("--- End report ---")
